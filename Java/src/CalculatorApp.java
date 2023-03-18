@@ -1,12 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class CalculatorApp extends JFrame {
 
     private JTextField inputField;
     private JPanel numberPanel, extrasPanel;
     private Font font;
+    private Evaluator evaluator;
 
     private enum buttonType {INPUT, CLEAR, EVAL};
 
@@ -14,6 +14,9 @@ public class CalculatorApp extends JFrame {
         super("Calculator App");
         setLayout(new BorderLayout());
         font = new Font("sans-serif", Font.PLAIN, fontSize);
+
+        // instantiate Evaluator object
+        evaluator = new CustomEvaluator();
 
         inputField = new JTextField();
         inputField.setFont(font);
@@ -73,61 +76,15 @@ public class CalculatorApp extends JFrame {
     }
 
     private void evaluate() {
-        // parse the input field to get a list of tokens (integer, decimal, or operator)
-        String input = inputField.getText();
-        ArrayList<Token> tokens = new ArrayList<Token>();
-        String operators = "+-*/";
-
-        String currentString = "";
-        boolean isDecimal = false;
-        for(int i = 0; i < input.length(); i++) {
-            char currentChar = input.charAt(i);
-            if(operators.contains(Character.toString(currentChar))) {
-                if(isDecimal)
-                    tokens.add(new Token<Double>(Double.parseDouble(currentString), "decimal"));
-                else
-                    tokens.add(new Token<Integer>(Integer.parseInt(currentString), "integer"));
-
-                tokens.add(new Token<Character>(currentChar, "operator"));
-                currentString = "";
-                isDecimal = false;
-            }
-            else {
-                if(currentChar == '.') {
-                    isDecimal = true;
-                }
-                currentString += currentChar;
-
-                if(i == input.length() - 1) {
-                    if(isDecimal)
-                        tokens.add(new Token<Double>(Double.parseDouble(currentString), "decimal"));
-                    else
-                        tokens.add(new Token<Integer>(Integer.parseInt(currentString), "integer"));
-                }
-            }
-        }
-
-        // build an operation graph from the tokens
-        for(Token token: tokens) {
-            System.out.println(token);
-        }
-    }
-
-    private class Token<T> {
-        private T value;
-        private String type;
-
-        public Token(T value, String type) {
-            this.value = value;
-            this.type = type;
-        }
-
-        public T getValue() {
-            return value;
-        }
-
-        public String toString() {
-            return "type: " + type + "\tvalue: " + value;
+        double result;
+        try {
+            result = evaluator.evaluate(inputField.getText());
+            if(result % 1 == 0)
+                inputField.setText(Integer.toString((int) result));
+            else
+                inputField.setText(Double.toString(result));
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(this, "Invalid expression", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
