@@ -27,7 +27,7 @@ class JSEngineEvaluator implements Evaluator {
 
 class CustomEvaluator implements Evaluator {
 
-    public double evaluate(String expr) {
+    public double evaluate(String expr) throws ArithmeticException {
         // parse the expression and evaluate
         Stack<Double> numbers = new Stack<Double>();
         Stack<Character> operators = new Stack<Character>();

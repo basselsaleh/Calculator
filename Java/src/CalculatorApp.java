@@ -79,12 +79,9 @@ public class CalculatorApp extends JFrame {
         double result;
         try {
             result = evaluator.evaluate(inputField.getText());
-            if(result % 1 == 0)
-                inputField.setText(Integer.toString((int) result));
-            else
-                inputField.setText(Double.toString(result));
+            inputField.setText(Double.toString(result));
         } catch(Exception e) {
-            JOptionPane.showMessageDialog(this, "Invalid expression", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
