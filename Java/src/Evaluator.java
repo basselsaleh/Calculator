@@ -17,7 +17,6 @@ class JSEngineEvaluator implements Evaluator {
     public JSEngineEvaluator() {
         manager = new ScriptEngineManager();
         engine = manager.getEngineByName("JavaScript");
-        System.out.println(engine);
     }
 
     public double evaluate(String expr) throws ScriptException {
