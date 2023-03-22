@@ -35,7 +35,7 @@ public class CalculatorApp extends JFrame {
         // add extra buttons to extras panel
         extrasPanel = new JPanel(new GridLayout(5, 1));
 
-        // add extra buttons (zero and operators)
+        // add extra buttons (clear and operators)
         String[] operators = {"+", "-", "*", "/"};
         for(String op: operators)
             addButtonToExtrasPanel(op, buttonType.INPUT);
